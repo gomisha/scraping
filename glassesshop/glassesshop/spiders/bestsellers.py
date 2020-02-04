@@ -27,11 +27,14 @@ class BestsellersSpider(scrapy.Spider):
             link = glasses.xpath(".//div[2]/p/a/@href").get()
             image = glasses.xpath(".//div[1]/a/img[1]/@src").get()
 
-            if name:
-                yield {
-                    'name': name,
-                    'price': price,
-                    'link': link,
-                    'image': image
-                    #'User-Agent': response.request.headers['User-Agent']
-                }
+            yield {
+                'name': name,
+                'price': price,
+                'link': link,
+                'image': image
+                #'User-Agent': response.request.headers['User-Agent']
+            }
+
+        next_page_link = response.xpath("//a[contains(@aria-label, 'Next')]/@href").get() 
+        if next_page_link:
+            yield response.follow(url=next_page_link, callback=self.parse)
