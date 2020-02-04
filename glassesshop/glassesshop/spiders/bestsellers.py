@@ -8,15 +8,15 @@ class BestsellersSpider(scrapy.Spider):
     start_urls = ['https://www.glassesshop.com/bestsellers']
 
     def parse(self, response):
-        glasses_all = response.xpath("//div[@class='col-sm-6 col-md-4 m-p-product']")
+        glasses_all = response.xpath("//div[contains(@class, 'm-p-product')]")
 
         for glasses in glasses_all:
-            name = glasses.xpath(".//div[2]/p/a/text()").get()
-            price = glasses.xpath(".//div[2]/div/span/text()").get()
+            name = glasses.xpath(".//div[@class='row']/p[contains(@class, 'pname')]/a/text()").get()
+            price = glasses.xpath(".//div[@class='row']/div[contains(@class, 'pprice')]/span/text()").get()
 
             #promo ad - "buy 1 get 1 free" instead of glasses shown sometimes in grid
             if name is None:
-                continue
+                 continue
 
             # sale price will be in different place and regular price will be blank
             price = price.strip() #sale price will cause this to have whitespace and be blank
