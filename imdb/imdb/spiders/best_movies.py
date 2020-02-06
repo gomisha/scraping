@@ -12,6 +12,7 @@ class BestMoviesSpider(CrawlSpider):
     rules = (
         Rule(LinkExtractor(restrict_xpaths=("//h3[@class='lister-item-header']/a")), 
                 callback='parse_item', follow=True),
+        #next page link
         Rule(LinkExtractor(restrict_xpaths="(//a[@class='lister-page-next next-page'])[1]")),
     )
 
@@ -24,10 +25,4 @@ class BestMoviesSpider(CrawlSpider):
             'duration': response.xpath("normalize-space(//time[1]/text())").get(),
             'genre':    response.xpath("//div[@class='subtext']/a[1]/text()").get(),
             'url':      response.url
-
         }
-        # item = {}
-        # #item['domain_id'] = response.xpath('//input[@id="sid"]/@value').get()
-        # #item['name'] = response.xpath('//div[@id="name"]').get()
-        # #item['description'] = response.xpath('//div[@id="description"]').get()
-        # return item
