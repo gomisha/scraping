@@ -22,5 +22,7 @@ puppeteer.launch({ headless: false, devtools: true }).then(async browser => {
       request.continue();
     }
   })
-  await page.goto('https://vanityfair.com')
+  //https://stackoverflow.com/questions/55910981/puppeteer-dont-return-all-requests-from-a-particular-website
+  //https://github.com/puppeteer/puppeteer/blob/v2.1.0/docs/api.md#pagegotourl-options
+  await page.goto('https://vanityfair.com', { waitUntil: 'networkidle0' });
 })
