@@ -6,12 +6,12 @@ const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 puppeteer.use(StealthPlugin())
 
-puppeteer.launch({ headless: false }).then(async browser => {
+puppeteer.launch({ headless: false, devtools: true }).then(async browser => {
   const page = await browser.newPage()
   await page.setRequestInterception(true);
 
   page.on('request', (request) => {
-    if(['image', 'stylesheet', 'font'].includes(request.resourceType())) {
+    if(['image', 'stylesheet', 'font', 'other'].includes(request.resourceType())) {
       request.abort();
     }
     //filter out all requests to other domains (ad trackers, analytics, CDNs etc)
